@@ -16,9 +16,7 @@ def transform_timestamp(timestamp):
 class GoProFileModel:
 
     def __init__(self, filename):
-
         self.filename = filename
-        # self.gp = GoProCamera.GoPro(constants.gpcontrol)
 
     @property
     def prefix(self):
@@ -39,23 +37,13 @@ class GoProFileModel:
     @property
     def sane_format(self):
         return self.clip + "-" + self.chapter + "." + self.extension
-    
-    @property
-    def duration(self):
-        return 0
-        return self.gp.getVideoInfo("dur",folder,self.filename)
-
-    @property
-    def tags(self):
-        return 0
-        return self.gp.getVideoInfo("tags",folder,self.filename)
-
 
 class GoProFileGroup:
 
     def __init__(self):
-        self.clip_id
+        self.clip_id = None
         self.chapters = []
+
 
 
 files = ["GH010041.mp4","GH020041.mp4","GH030041.mp4","GH010042.mp4","GH010043.mp4"]
