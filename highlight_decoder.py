@@ -13,91 +13,48 @@ def transform_timestamp(timestamp):
 
     return str(int(minutes)) + ":" + str(seconds)
 
-class GoProFileModel:
+class VideoFileModel:
 
     def __init__(self, filename):
-        self.filename = filename
+        self.__filename = filename
 
     @property
-    def prefix(self):
-        return self.filename[0:2]
+    def video_encoding(self):
+        return self.__filename[0:2]
 
     @property
     def chapter(self):
-        return self.filename[2:4]
+        return self.__filename[2:4]
 
     @property
     def clip(self):
-        return self.filename[4:8]
+        return self.__filename[4:8]
 
     @property
-    def extension(self):
-        return self.filename[9:]
+    def file_extension(self):
+        return self.__filename[9:]
     
     @property
     def sane_format(self):
-        return self.clip + "-" + self.chapter + "." + self.extension
+        return self.clip + "-" + self.chapter + "." + self.file_extension
 
-class GoProFileGroup:
-
-    def __init__(self):
-        self.clip_id = None
-        self.chapters = []
-
-
-
-files = ["GH010041.mp4","GH020041.mp4","GH030041.mp4","GH010042.mp4","GH010043.mp4"]
-file_groups = []
-file_group = {}
-chapters = []
-
-# First load up the file_groups
-for f in files:
-    j = GoProFileModel(f)
-
-    if j.clip not in file_group:
-        file_group = {}
-        file_group[j.clip] = None
-        file_groups.append(file_group)
-
-# Now load the chapters
-for f in files:
-
-    j = GoProFileModel(f)
-
-    chapter = {}
-    chapter = {
-        j.chapter: {
-            "duration": j.duration,
-            "tags": j.tags
-        }
-    }
-
-    chapters.append(chapter)
-
-print(chapters)
-
-"""
-for f in files:
-    j = GoProFileModel(f)
-
-    chapter = {
-        j.chapter: {
-            "duration": j.duration,
-            "tags": j.tags
-        }
-    }
-
-    if (file_group[j.clip] == None):
-        file_group = {j.clip: {}}
+    @property
+    def video_length(self):
+        return self.__length
     
-    file_group[j.clip].append(chapter)
+    @video_length.setter
+    def video_length(self, length):
+        self.__length = length
 
-file_groups.append(file_group)
 
-media = gpCam.listMedia(True, True)
-for i in media:
-        folder = i[0]
-        filename = i[1]
-        if filename.endswith('MP4'):
-"""
+# Build array of video clip files
+video_files = []
+# for file in gpCam.listMedia(True, True):
+    v = VideoFileModel("GH011234.mp4")
+    v.video_length = file.length
+    video_files.append(v)
+
+
+
+for n in video_files:
+    print(n.sane_format)
